@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0; overflow-x: hidden; 
+            color: rgb(0, 0, 0); text-align: center;
+        }
+
+        #bg-video {
+            position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%;
+            z-index: -100; object-fit: cover;
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                              url('https://w0.peakpx.com/wallpaper/146/1014/HD-wallpaper-movie-collage-movies-poster-collage.jpg');
+            background-size: cover;
+        }
+
+        .container {
+            position: relative; z-index: 1;
+            background-image: url('https://media.istockphoto.com/id/182400641/photo/movie-background.jpg?s=612x612&w=0&k=20&c=DwUV3jnlbRdUUjUXKlpEtHqm7NWANFLE3sTV-zztKqs=');
+            background-size: cover; background-position: center;
+            color: #f40909; padding: 20px; margin: 10px auto;
+            width: 70%; border-radius: 15px; backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        select { padding: 12px; width: 60%; border-radius: 5px; border: none; font-size: 16px; }
+        
+        button { 
+            padding: 12px 25px; background: #4505f5; color: white; 
+            border: none; cursor: pointer; border-radius: 5px; 
+            font-weight: bold; font-size: 16px; transition: 0.3s;
+        }
+        button:hover { background: #ff0a16; }
+
+        
+        .accuracy-display {
+            margin: 20px auto; padding: 10px;
+            background: rgba(227, 100, 16, 0.1);
+            border: 2px solid #3eee87; color: hsl(120, 86%, 48%);
+            border-radius: 10px; width: fit-content;
+            font-weight: bold; font-size: 20px;
+        }
+        
+        .movies-grid {
+            display: flex; gap: 20px; justify-content: center;
+            flex-wrap: wrap; margin-top: 40px;
+        }
+
+        .card {
+            width: 200px; background: #f7f4f4; border-radius: 12px;
+            padding: 25px 15px; transition: 0.4s;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex; align-items: center; justify-content: center; min-height: 80px;
+        }
+        
+        .card:hover { transform: translateY(-10px); border-color: #e50914; }
+        .card p { margin: 0; font-size: 16px; font-weight: bold; color: #0b0b0b; }
+    </style>
+</head>
+<body>
+
+<video autoplay muted loop id="bg-video">
+    <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
+</video>
+
+<div class="container">
+    <h1>🎬 𝓜𝓸𝓿𝓲𝓮 𝓡𝓮𝓬𝓸𝓶𝓶𝓮𝓷𝓭𝓪𝓽𝓲𝓸𝓷 𝓢𝔂𝓼𝓽𝓮𝓶</h1>
+    
+    <form action="/" method="POST">
+        <select name="movie_name">
+            {% for movie in movie_list %}
+            <option value="{{ movie }}">{{ movie }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">𝓖𝓮𝓽 𝓡𝓮𝓬𝓸𝓶𝓶𝓮𝓷𝓭𝓪𝓽𝓲𝓸𝓷𝓼</button>
+    </form>
+
+    {% if accuracy is defined and accuracy %}
+    <div class="accuracy-display">
+         Prediction Accuracy: {{ accuracy }}%
+    </div>
+    {% endif %}
+
+    {% if names %}
+    <div class="section">
+        <h2 style="margin-top: 50px; color: #e50914;">𝓡𝓮𝓼𝓾𝓵𝓽 𝓕𝓸𝓻: {{ selection }}</h2>
+        <div class="movies-grid">
+            {% for name in names %}
+            <div class="card">
+                <p> {{ name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
